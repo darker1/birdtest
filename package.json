@@ -1,0 +1,17 @@
+{
+  "name": "bird-technical-challenge-darker1-795",
+  "version": "1.0.0",
+  "description": "Technical Challenge by Kyle Wall",
+  "main": "index.js",
+  "repository": "https://github.com/bird-projects/bird-technical-challenge-darker1-795.git",
+  "author": "Kyle Wall <kyle.wall@hyperloop-one.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^10.11.4"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc"    
+
+  }
+}
