@@ -3,17 +3,27 @@ import { BirdEvent, EventType } from "./event";
 export class EventMaps {
   private byType: Map<EventType, Array<BirdEvent>> = new Map<EventType, Array<BirdEvent>>();
   private byId: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
+  private byUser: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
+
   constructor(events: Array<BirdEvent>) {
     // initialize the map so we dont have to check at 
     // every iteration. 
     Object.keys(EventType).forEach(k => this.byType[EventType[k]] = new Array<BirdEvent>());
-    
+
     events.forEach(e => {
       this.byType[e.type].push(e);
-      if(!this.byId[e.birdId]) {
+
+      if (!this.byId[e.birdId]) {
         this.byId[e.birdId] = new Array<BirdEvent>();
       }
       this.byId[e.birdId].push(e);
+      
+      if (e.userId) { // need to avoid the null users
+        if (!this.byUser[e.userId]) {
+          this.byUser[e.userId] = new Array<BirdEvent>();
+        }
+        this.byUser[e.userId].push(e);
+      }
     });
   }
 
@@ -21,34 +31,99 @@ export class EventMaps {
     return this.byType[EventType.Drop].length;
   }
 
-  public birdFarthestFromDropPoint(): {bird: string, distance: Number}  {
-    let furthest: {bird: string, distance: Number} = {bird: '', distance: -1};
-    
-    Object.keys(this.byId).forEach( k => {
+  public birdFarthestFromDropPoint(): { bird: string, distance: number } {
+    let farthest: { bird: string, distance: number } = { bird: '', distance: -1 };
+
+    Object.keys(this.byId).forEach(k => {
       const v: BirdEvent[] = this.byId[k];
       // Assuming that there is only 1 drop event. Should the simulation ever account 
       // multiple days - and thus possibly multiple drops, this will need to be modified.
       const dropEvent = v.find(e => e.type === EventType.Drop);
       // We only care about where rides end for the calculation.
-      const furthestDistance = v.filter(e => e.type === EventType.EndRide)
-       .reduce<Number>((result, e) => {
-        const distance = this.distance(dropEvent, e);
-        
-        if(distance > result) {
-          result = distance;
+      const farthestDistance = v.filter(e => e.type === EventType.EndRide)
+        .reduce<number>((result, e) => {
+          const distance = this.distance(dropEvent, e);
+
+          if (distance > result) {
+            result = distance;
+          }
+          return result;
+        }, 0);
+
+      if (farthestDistance > farthest.distance) {
+        farthest.bird = k;
+        farthest.distance = farthestDistance;
+      }
+    });
+    return farthest;
+  }
+
+  public birdTotalGreatestDistance() : { bird: string, distance: number } {
+    let farthest: { bird: string, distance: number } = { bird: '', distance: -1 };
+
+    Object.keys(this.byId).forEach(k => {
+      //ensure that the events are in order
+      const v: BirdEvent[] = this.sortByTimestamp(k, this.byId[k]);
+
+      /// filter preserves order so we can filter to only the start rides.
+      const totalDistance = v.reduce<number>((result, b, i) => {
+        if (b.type === EventType.StartRide) {
+          //ensure the next event is a EndRide
+          if (v.length > i + 1 && v[i + 1].type === EventType.EndRide) {
+            result += this.distance(b, v[i + 1]);
+          }
         }
         return result;
       }, 0);
-      
-      if(furthestDistance > furthest.distance) {
-        furthest.bird = k;
-        furthest.distance = furthestDistance;
+
+      if (totalDistance > farthest.distance) {
+        farthest.bird = k;
+        farthest.distance = totalDistance;
       }
     });
-    return furthest;
+    return farthest;
+  }
+
+  public userPaidMost(): {userId: string, paid: string} {
+    let highestPayer: {userId: string, paid: number} = {userId: '', paid: -1};
+  
+    Object.keys(this.byUser).forEach(k => {
+      //ensure that the events are in order
+      const v: BirdEvent[] = this.sortByTimestamp(k, this.byUser[k]);
+
+      const totalPaid = v.reduce<number>((result, b, i) => { 
+        if (b.type === EventType.StartRide) {
+          //ensure the next event is a EndRide
+          if (v.length > i + 1 && v[i + 1].type === EventType.EndRide) {
+            result += this.calculateCost(b, v[i + 1]);
+          }
+        }
+        return result; 
+      },0);
+
+      if (totalPaid > highestPayer.paid) {
+        highestPayer.userId = k;
+        highestPayer.paid = totalPaid;
+      }
+    });  
+    return { userId: highestPayer.userId, paid: `$${highestPayer.paid.toFixed(2)}`};
+  }
+
+  private sortByTimestamp(k: string, arr: BirdEvent[]): BirdEvent[] {
+    return arr.sort((b1, b2) => b1.timestamp === b2.timestamp ? 0 : b1.timestamp > b2.timestamp ? 1 : -1);
   }
 
   private distance(start: BirdEvent, stop: BirdEvent): number {
-    return Math.sqrt(Math.pow(stop.xCord - start.xCord, 2)-Math.pow(stop.yCord - start.yCord, 2));
+    return Math.sqrt(Math.pow(stop.xCord - start.xCord, 2) - Math.pow(stop.yCord - start.yCord, 2));
+  }
+
+  private calculateCost(start: BirdEvent, stop: BirdEvent): number {
+    let totalSeconds: number = stop.timestamp - start.timestamp - 60;
+    
+    if(totalSeconds < 0) {
+      return 0;
+    }
+
+    return 1.15 + (.15 * Math.ceil(totalSeconds/60));
   }
 }
