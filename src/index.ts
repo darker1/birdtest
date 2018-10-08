@@ -11,6 +11,10 @@ const application = async () => {
   console.log(`Bird that traveled the greatest total distance: ${greatestTotalDistance.bird}, Distance: ${greatestTotalDistance.distance}.`);
   const highestPayer = eventMaps.userPaidMost();
   console.log(`User that paid the most: ${highestPayer.userId}, paid: ${highestPayer.paid}.`);
+  const longestWait = eventMaps.longestWaitTimeBetweenRides();
+  console.log(`Bird with the longest wait time: ${longestWait.bird}, Seconds: ${longestWait.seconds}`);
+  const avgSpeed = eventMaps.averageSpeed();
+  console.log(`Average speed of all birds: ${avgSpeed} units/second.`)
 }
 
 application();
