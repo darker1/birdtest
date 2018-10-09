@@ -3,7 +3,7 @@ import { BirdEvent, EventType } from "./event";
 export class EventMaps {
   public byType: Map<EventType, Array<BirdEvent>> = new Map<EventType, Array<BirdEvent>>();
   public byId: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
-  private byUser: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
+  public byUser: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
 
   constructor(private events: Array<BirdEvent>) {
     // initialize the map so we dont have to check at 
