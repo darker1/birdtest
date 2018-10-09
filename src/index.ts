@@ -1,15 +1,17 @@
 import { EventParser } from "./event_parser";
 import { EventMaps } from "./event_maps";
 import { TotalBirdsCommand } from "./commands/total_birds";
+import { FarthestFromDropPointCommand } from "./commands/farthest_from_drop_point";
 
 const application = async () => {
   const events = await EventParser.parseFile('events.txt');
   const eventMaps = new EventMaps(events);
   const totalBirds = new TotalBirdsCommand(eventMaps);
-
-  console.log(totalBirds.run());
+  const farthestFromDrop = new FarthestFromDropPointCommand(eventMaps);
   const farthestFromStartLocation = eventMaps.birdFarthestFromDropPoint();
-  console.log(`Bird furthest from its drop location: ${farthestFromStartLocation.bird}.  Distance: ${farthestFromStartLocation.distance}.`);
+  
+  console.log(totalBirds.run());
+  console.log(farthestFromDrop.run());
   const greatestTotalDistance = eventMaps.birdTotalGreatestDistance();
   console.log(`Bird that traveled the greatest total distance: ${greatestTotalDistance.bird}, Distance: ${greatestTotalDistance.distance}.`);
   const highestPayer = eventMaps.userPaidMost();

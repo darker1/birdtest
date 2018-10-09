@@ -2,7 +2,7 @@ import { BirdEvent, EventType } from "./event";
 
 export class EventMaps {
   public byType: Map<EventType, Array<BirdEvent>> = new Map<EventType, Array<BirdEvent>>();
-  private byId: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
+  public byId: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
   private byUser: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
 
   constructor(private events: Array<BirdEvent>) {
@@ -25,10 +25,6 @@ export class EventMaps {
         this.byUser[e.userId].push(e);
       }
     });
-  }
-
-  public totalBirdsDroppedOff() {
-    return this.byType[EventType.Drop].length;
   }
 
   public birdFarthestFromDropPoint(): { bird: string, distance: number } {
@@ -170,7 +166,6 @@ export class EventMaps {
   private distance(start: BirdEvent, stop: BirdEvent): number {
     return Math.sqrt(Math.pow(stop.xCord - start.xCord, 2) + Math.pow(stop.yCord - start.yCord, 2));
   }
-  // -52.5-38.31
 
   private calculateCost(start: BirdEvent, stop: BirdEvent): number {
     let totalSeconds: number = stop.timestamp - start.timestamp - 60;
