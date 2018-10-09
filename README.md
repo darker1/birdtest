@@ -1,3 +1,37 @@
+# Coding Challenge 
+## by Kyle Wall
+
+This test answers all the questions and the bonus questions.  
+
+Stack: 
+  * Typescript 3.1
+  * Nodejs 10.11
+  * Docker Engine 18.06.0-ce
+  * Docker Compose 3.1
+
+Prerequisites:
+```
+Install Docker & Docker Compose
+```
+
+Commands to run:
+```
+docker-compose up
+```
+
+This fire up 2 docker containers
+  * Transpiler - Watches for code changes and reacts to them by transpiling the typescript into javascript.
+  * Server - Runs the transpiled code and spits output to the console.  
+
+Other important command:
+Needed if you want to rebuild the containers.
+```
+docker-compose up --build
+```
+
+
+
+
 # Bird Engineering: Coding Exercise
 
 Thank you for your continued interest in Bird!
