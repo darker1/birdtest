@@ -1,0 +1,29 @@
+version: '3.1'
+
+volumes:
+  dist:
+  node_modules:
+
+services:  
+  transpiler:
+    build: .
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - dist:/app/dist
+      - node_modules:/app/node_modules
+
+    command: tsc -w
+
+  server:
+    build: .
+    depends_on:
+      - "transpiler"
+    volumes:
+      - .:/app
+      - dist:/app/dist
+      - node_modules:/app/node_modules
+
+
+
