@@ -4,6 +4,7 @@ import { TotalBirdsCommand } from "./commands/total_birds";
 import { FarthestFromDropPointCommand } from "./commands/farthest_from_drop_point";
 import { GreatestTotalDistanceCommand } from "./commands/greatest_total_distance";
 import { HighestPayerCommand } from "./commands/highest_payer";
+import { LongestBirdWaitTimeCommand } from "./commands/longest_bird_wait_time";
 
 const application = async () => {
   const events = await EventParser.parseFile('events.txt');
@@ -13,13 +14,12 @@ const application = async () => {
   const farthestFromStartLocation = eventMaps.birdFarthestFromDropPoint();
   const greatestTotalDistance = new GreatestTotalDistanceCommand(eventMaps);
   const highestPayer = new HighestPayerCommand(eventMaps);
+  const longestWaitTime = new LongestBirdWaitTimeCommand(eventMaps)
   console.log(totalBirds.run());
   console.log(farthestFromDrop.run());
   console.log(greatestTotalDistance.run());
   console.log(highestPayer.run());
-  const highestPayer1 = eventMaps.userPaidMost();
-  const longestWait = eventMaps.longestWaitTimeBetweenRides();
-  console.log(`Bird with the longest wait time: ${longestWait.bird}, Seconds: ${longestWait.seconds}`);
+  console.log(longestWaitTime.run());
   const avgSpeed = eventMaps.averageSpeed();
   console.log(`Average speed of all birds: ${avgSpeed} units/second.`)
 }
