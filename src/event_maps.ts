@@ -1,7 +1,7 @@
 import { BirdEvent, EventType } from "./event";
 
 export class EventMaps {
-  private byType: Map<EventType, Array<BirdEvent>> = new Map<EventType, Array<BirdEvent>>();
+  public byType: Map<EventType, Array<BirdEvent>> = new Map<EventType, Array<BirdEvent>>();
   private byId: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
   private byUser: Map<string, Array<BirdEvent>> = new Map<string, Array<BirdEvent>>();
 
@@ -147,7 +147,7 @@ export class EventMaps {
             // calculate speed as units distance over seconds
             const time = (v[i+1].timestamp - b.timestamp);
             const distance = this.distance(b, v[i + 1])
-            
+
             result += distance / time;
 
             totalRides += 1;
