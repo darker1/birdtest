@@ -11,7 +11,7 @@ export class AverageSpeedCommand implements Command {
     let totalRides = 0;
     const sumSpeed = Object.keys(this.events.byId).reduce((resultSpeed, k) => {
       //ensure that the events are in order
-      const v: BirdEvent[] = Helpers.sortByTimestamp(k, this.events.byId[k]);
+      const v: BirdEvent[] = Helpers.sortByTimestamp(this.events.byId[k]);
 
       const totalSpeed = v.reduce<number>((result, b, i) => {
         if (b.type === EventType.StartRide) {
@@ -28,9 +28,12 @@ export class AverageSpeedCommand implements Command {
         }
         return result;
       }, 0);
-
       return resultSpeed + totalSpeed;
     }, 0);
+
+    if(sumSpeed === 0 || totalRides === 0) {
+      return 'No bird rides.  No average speed calculated.';
+    }
 
     const avgSpeed = sumSpeed / totalRides;
     

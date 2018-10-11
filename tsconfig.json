@@ -4,13 +4,14 @@
     "module": "commonjs",
     "outDir": "dist",
     "sourceMap": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "rootDir": "./"
   },
   "files": [
     "./node_modules/@types/node/index.d.ts"
   ],
   "include": [
-    "src/**/*.ts"
+    "**/*.ts"
   ],
   "exclude": [
     "node_modules",

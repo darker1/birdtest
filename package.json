@@ -7,10 +7,17 @@
   "author": "Kyle Wall <kyle.wall@hyperloop-one.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^10.11.4"
-  },   
+    "@types/node": "^10.11.4",
+    "@types/chai": "^4.1.6",
+    "@types/mocha": "^5.2.5"
+  },
   "scripts": {
-    "start": "nodemon -w dist/ dist/index.js",
-    "build": "tsc -w"
+    "start": "nodemon -w dist/src --delay 3 dist/src/index.js",
+    "build": "tsc -w",
+    "test": "nodemon -w dist/src -w dist/tests --delay 1 --exec mocha -- /app/dist/tests/*.test.js"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0"
   }
 }

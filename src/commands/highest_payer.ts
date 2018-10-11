@@ -12,7 +12,7 @@ export class HighestPayerCommand implements Command {
 
     Object.keys(this.events.byUser).forEach(k => {
       //ensure that the events are in order
-      const v: BirdEvent[] = Helpers.sortByTimestamp(k, this.events.byUser[k]);
+      const v: BirdEvent[] = Helpers.sortByTimestamp(this.events.byUser[k]);
 
       const totalPaid = v.reduce<number>((result, b, i) => {
         if (b.type === EventType.StartRide) {
@@ -24,11 +24,16 @@ export class HighestPayerCommand implements Command {
         return result;
       }, 0);
 
-      if (totalPaid > highestPayer.paid) {
+      if (totalPaid > 0 && totalPaid > highestPayer.paid) {
         highestPayer.userId = k;
         highestPayer.paid = totalPaid;
       }
-    });
+    }); 
+
+    if (highestPayer.paid === -1) {
+      return 'No user rides. No highest payer calculated.';
+    }
+
     return `User that paid the most: ${highestPayer.userId}, paid: $${highestPayer.paid.toFixed(2)}.`;
   }
 }

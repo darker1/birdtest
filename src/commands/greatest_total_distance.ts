@@ -12,7 +12,7 @@ export class GreatestTotalDistanceCommand implements Command {
 
     Object.keys(this.events.byId).forEach(k => {
       //ensure that the events are in order
-      const v: BirdEvent[] = Helpers.sortByTimestamp(k, this.events.byId[k]);
+      const v: BirdEvent[] = Helpers.sortByTimestamp(this.events.byId[k]);
 
       const totalDistance = v.reduce<number>((result, b, i) => {
         if (b.type === EventType.StartRide) {
@@ -29,6 +29,11 @@ export class GreatestTotalDistanceCommand implements Command {
         farthest.distance = totalDistance;
       }
     });
+
+    if (farthest.distance === -1) {
+      return 'No Birds traveled.  No longest total distance could be calculated.';
+    }
+
     return `Bird that traveled the greatest total distance: ${farthest.bird}, Distance: ${farthest.distance}.`;
   }
 }
