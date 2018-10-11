@@ -7,7 +7,7 @@ Stack:
   * Typescript 3.1
   * Nodejs 10.11
   * Docker Engine 18.06.0-ce
-  * Docker Compose 3.1
+  * Docker Compose 3.5
 
 Prerequisites:
 ```
@@ -19,9 +19,10 @@ Commands to run:
 docker-compose up
 ```
 
-This fire up 2 docker containers
+This fire up 3 docker containers
   * Transpiler - Watches for code changes and reacts to them by transpiling the typescript into javascript.
-  * Server - Runs the transpiled code and spits output to the console.  
+  * Server - Runs the transpiled code and spits output to the console. 
+  * Tests - Runs all the tests and watches for changes 
 
 Other important command:
 Needed if you want to rebuild the containers.
@@ -29,7 +30,11 @@ Needed if you want to rebuild the containers.
 docker-compose up --build
 ```
 
-
+TODO/GOTCHAs
+  * For some reason on docker-compose up, the tests and server run twice.  This is probably because of something stange with the watches via nodemon. 
+  * Should write tests for event Maps and Event Parser and Event
+  * Should install eslint and have it run on build
+  * Should allow for args to describe which events.txt file to pull in
 
 
 # Bird Engineering: Coding Exercise
