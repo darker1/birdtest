@@ -13,6 +13,7 @@ x-shared-volume:
 
 volumes:
   dist:
+  node_modules:
 
 services:  
   transpiler:
@@ -22,6 +23,7 @@ services:
     volumes:
       - *local-files
       - *shared-files
+      - node_modules:/app/node_modules
     command: yarn build
   cli:
     build: ./src
@@ -30,6 +32,7 @@ services:
     volumes:
       - *local-files
       - *shared-files
+      - node_modules:/app/node_modules
   test:
     build: ./tests
     depends_on:
@@ -37,4 +40,5 @@ services:
     volumes:
       - *local-files
       - *shared-files
+      - node_modules:/app/node_modules  
     command: yarn test
