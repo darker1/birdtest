@@ -4,9 +4,6 @@ FROM node
 RUN mkdir /app
 WORKDIR /app
 
-RUN npm install -g typescript mocha nodemon
-
-# install dependencies
-RUN yarn install
+RUN npm install -g nodemon
 
 CMD ["yarn","test"]

@@ -11,6 +11,4 @@ COPY package.json tsconfig.json /app/
 # install dependencies
 RUN yarn install
 
-RUN tsc 
-
 CMD ["yarn","build"]

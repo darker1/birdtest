@@ -23,7 +23,7 @@ services:
       - *local-files
       - *shared-files
     command: yarn build
-  server:
+  cli:
     build: ./src
     depends_on:
       - "transpiler"

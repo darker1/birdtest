@@ -2,7 +2,7 @@
   "name": "bird-technical-challenge-darker1-795",
   "version": "1.0.0",
   "description": "Technical Challenge by Kyle Wall",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "repository": "https://github.com/bird-projects/bird-technical-challenge-darker1-795.git",
   "author": "Kyle Wall <kyle.wall@hyperloop-one.com>",
   "license": "MIT",
@@ -12,9 +12,9 @@
     "@types/mocha": "^5.2.5"
   },
   "scripts": {
-    "start": "nodemon -w dist/src --delay 3 dist/src/index.js",
+    "start": "sleep 3 && nodemon -w dist/src --delay 3 dist/src/index.js",
     "build": "tsc -w",
-    "test": "nodemon -w dist/src -w dist/tests --delay 1 --exec mocha -- /app/dist/tests/*.test.js"
+    "test": "sleep 3 && nodemon -w dist/src -w dist/tests --delay 1 --exec mocha -- /app/dist/tests/*.test.js"
   },
   "dependencies": {
     "chai": "^4.2.0",
